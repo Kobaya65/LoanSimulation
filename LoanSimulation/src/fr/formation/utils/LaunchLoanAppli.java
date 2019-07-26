@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import fr.formation.business.Funding;
+
 public class LaunchLoanAppli {
 
 	public static void main(String[] args) {
@@ -59,15 +61,16 @@ public class LaunchLoanAppli {
 		// close scanner
 		sc.close();
 
-		System.out.println("Amount         => " + decimalFormat.format((long) amount));
-		System.out.println("Loan type      => " + loanType);
-		System.out.println("Duration       => " + duration);
-		System.out.println("Interest rate  => " + interestRate + "%");
-		System.out.println("Start date     => " + sLocalDate.format(longFormatter));
-		System.out.println("Insurance rate => " + insuranceRate + "%");
+//		System.out.println("Amount         => " + decimalFormat.format((long) amount));
+//		System.out.println("Loan type      => " + loanType);
+//		System.out.println("Duration       => " + duration);
+//		System.out.println("Interest rate  => " + interestRate + "%");
+//		System.out.println("Start date     => " + sLocalDate.format(longFormatter));
+//		System.out.println("Insurance rate => " + insuranceRate + "%");
 
 		// create a funding
-//		Funding myLoan = new Funding(amount, loanType, duration, interestRate, startDate, insuranceRate);
+		Funding myLoan = new Funding(amount, loanType, duration, interestRate, sLocalDate, insuranceRate);
+		System.out.println(myLoan.toString());
 		// System.out.println("My loan = " + myLoan.toString());
 	}
 }

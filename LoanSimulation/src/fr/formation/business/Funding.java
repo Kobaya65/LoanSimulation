@@ -61,6 +61,7 @@ public class Funding {
 
 	private void setLoanType(String loanType) {
 		Objects.requireNonNull(loanType);
+		this.loanType = loanType;
 	}
 
 	public int getDuration() {
@@ -96,10 +97,11 @@ public class Funding {
 	private void setStartDate(LocalDate startDate) {
 		Objects.requireNonNull(startDate);
 
-		if (startDate.isBefore((ChronoLocalDate) startDate)) {
-			this.startDate = startDate;
-		} else {
+		System.out.println("Date du jour = " + LocalDate.now().toString());
+		if (startDate.isBefore((ChronoLocalDate) LocalDate.now())) {
 			throw new IllegalArgumentException("Start date must be after today.");
+		} else {
+			this.startDate = startDate;
 		}
 	}
 
@@ -113,6 +115,16 @@ public class Funding {
 		} else {
 			this.insuranceRate = insuranceRate;
 		}
+	}
+
+	@Override
+	public String toString() {
+//		return "[Amount = " + String.format("% D", getAmount()) + "€, Loan type = " + getLoanType() + ", duration = "
+//				+ getDuration() + " years, interest rate = " + getInterestRate() + "%, start date = " + getStartDate()
+//				+ ", insurance rate = " + getInsuranceRate() + "%]";
+		return "[Amount = " + getAmount() + "€, Loan type = " + getLoanType() + ", duration = " + getDuration()
+				+ " years, interest rate = " + getInterestRate() + "%, start date = " + getStartDate()
+				+ ", insurance rate = " + getInsuranceRate() + "%]";
 	}
 
 }
