@@ -1,5 +1,9 @@
 package fr.formation.business;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.util.Objects;
+
 /**
  * 
  * @author Philippe AMICE
@@ -12,11 +16,21 @@ public class Funding {
 	private String loanType;
 	private int duration;
 	private Double interestRate;
-	private String startDate;
+	private LocalDate startDate;
 	private Double insuranceRate;
 
 	// constructor with all fields, considering all as mandatory
-	public Funding(int amount, String loanType, int duration, Double interestRate, String startDate,
+	/**
+	 * 
+	 * @param amount        amount of the loan
+	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
+	 *                      Works)
+	 * @param duration      term of the loan
+	 * @param interestRate  interest rate
+	 * @param startDate     date of the first monthly payment
+	 * @param insuranceRate insurance rate
+	 */
+	public Funding(int amount, String loanType, int duration, Double interestRate, LocalDate startDate,
 			Double insuranceRate) {
 
 		// using setters where controls are centralized
@@ -46,11 +60,7 @@ public class Funding {
 	}
 
 	private void setLoanType(String loanType) {
-		if (loanType == null) {
-			throw new NullPointerException("Loan Type is mandatory.");
-		} else {
-			this.loanType = loanType;
-		}
+		Objects.requireNonNull(loanType);
 	}
 
 	public int getDuration() {
@@ -70,6 +80,8 @@ public class Funding {
 	}
 
 	private void setInterestRate(Double interestRate) {
+		Objects.requireNonNull(interestRate);
+
 		if (interestRate == 0) {
 			throw new IllegalArgumentException("Interest rate must be greater than 0.");
 		} else {
@@ -77,16 +89,18 @@ public class Funding {
 		}
 	}
 
-	public String getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	private void setStartDate(String startDate) {
-//		if (startDate.compareTo(LocalDate.now().toString()) {
-		this.startDate = startDate;
-//		} else {
-//			throw new IllegalArgumentException("Start date must be after today.");
-//		}
+	private void setStartDate(LocalDate startDate) {
+		Objects.requireNonNull(startDate);
+
+		if (startDate.isBefore((ChronoLocalDate) startDate)) {
+			this.startDate = startDate;
+		} else {
+			throw new IllegalArgumentException("Start date must be after today.");
+		}
 	}
 
 	public Double getInsuranceRate() {
