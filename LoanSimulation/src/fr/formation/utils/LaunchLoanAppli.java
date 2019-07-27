@@ -1,7 +1,5 @@
 package fr.formation.utils;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -11,66 +9,53 @@ import fr.formation.business.Funding;
 public class LaunchLoanAppli {
 
 	public static void main(String[] args) {
-
-		int amount;
-		String loanType;
-		int duration;
-		Double interestRate;
-		String startDate;
-		LocalDate sLocalDate;
-		Double insuranceRate;
-		String fourYearsDigitsDatePattern = "[0-9]{2}/[0-9]{2}/[0-9]{4}";
-
-		DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-		decimalFormatSymbols.setDecimalSeparator(',');
-		decimalFormatSymbols.setGroupingSeparator(' ');
-		DecimalFormat decimalFormat = new DecimalFormat("# ##0,00", decimalFormatSymbols);
-
 		// in order to convert string to localdate...
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		DateTimeFormatter longFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
 
-		// initialize scanner on keyboard
+		// temporary variable for reading the scanner
+		String tempString = "";
+		// initialize scanner
 		Scanner sc = new Scanner(System.in);
 
-		// input amount
-		System.out.println("Enter amount : ");
-		amount = sc.nextInt();
+		tempString = InputData.input(sc, "amount");
+		int amount = Integer.parseInt(tempString);
 
-		// input loanType
-		System.out.println("Enter loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works') : ");
-		loanType = sc.next().toUpperCase();
+		tempString = InputData.input(sc, "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')");
+		String loanType = tempString.toUpperCase();
 
-		// input duration
-		System.out.println("Enter duration in year(s) : ");
-		duration = sc.nextInt();
+		tempString = InputData.input(sc, "duration in year(s)");
+		int duration = Integer.parseInt(tempString);
 
-		// input interest rate
-		System.out.println("Enter interest rate (with a comma as decimal separator) : ");
-		interestRate = sc.nextDouble();
+		tempString = InputData.input(sc, "interest rate with a dot as decimal separator (ex. 3.26 for 3.26%)");
+		double interestRate = Double.parseDouble(tempString);
 
-		// input start date
-		System.out.println("Enter start date (dd/mm/yyyy) : ");
-		startDate = sc.next(fourYearsDigitsDatePattern);
-		sLocalDate = LocalDate.parse(startDate, formatter);
+		// startDate = sc.next(fourYearsDigitsDatePattern);
+		LocalDate startDate = LocalDate.parse("1970-01-01");
+		byte countError = 0;
+		while (startDate.equals(LocalDate.parse("1970-01-01"))) {
+			try {
+				tempString = InputData.input(sc, "start date ()");
+				startDate = LocalDate.parse(tempString, formatter);
+			} catch (Exception e) {
+				countError++;
+				if (countError < 2) {
+					System.out.println("Wrong date format. Please retry !");
+				} else {
+					System.out.println(
+							"YOU FUCKING BASTARD !\nENTER THE DATE WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?");
+				}
+			}
+		}
 
-		// input insurance rate
-		System.out.println("Enter insurance rate (with a comma as decimal separator) : ");
-		insuranceRate = sc.nextDouble();
+		tempString = InputData.input(sc, "insurance rate with a dot as decimal separator (ex. 1.98 for 1.98%)");
+		Double insuranceRate = Double.parseDouble(tempString);
 
 		// close scanner
 		sc.close();
 
-//		System.out.println("Amount         => " + decimalFormat.format((long) amount));
-//		System.out.println("Loan type      => " + loanType);
-//		System.out.println("Duration       => " + duration);
-//		System.out.println("Interest rate  => " + interestRate + "%");
-//		System.out.println("Start date     => " + sLocalDate.format(longFormatter));
-//		System.out.println("Insurance rate => " + insuranceRate + "%");
-
 		// create a funding
-		Funding myLoan = new Funding(amount, loanType, duration, interestRate, sLocalDate, insuranceRate);
+		Funding myLoan = new Funding(amount, loanType, duration, interestRate, startDate, insuranceRate);
+
 		System.out.println(myLoan.toString());
-		// System.out.println("My loan = " + myLoan.toString());
 	}
 }

@@ -1,7 +1,10 @@
 package fr.formation.business;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -97,7 +100,7 @@ public class Funding {
 	private void setStartDate(LocalDate startDate) {
 		Objects.requireNonNull(startDate);
 
-		System.out.println("Date du jour = " + LocalDate.now().toString());
+		// System.out.println("Date du jour = " + LocalDate.now().toString());
 		if (startDate.isBefore((ChronoLocalDate) LocalDate.now())) {
 			throw new IllegalArgumentException("Start date must be after today.");
 		} else {
@@ -117,14 +120,17 @@ public class Funding {
 		}
 	}
 
+	// DateTimeFormatter in order to display the date the way I want !
+	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+
 	@Override
 	public String toString() {
-//		return "[Amount = " + String.format("% D", getAmount()) + "€, Loan type = " + getLoanType() + ", duration = "
-//				+ getDuration() + " years, interest rate = " + getInterestRate() + "%, start date = " + getStartDate()
-//				+ ", insurance rate = " + getInsuranceRate() + "%]";
-		return "[Amount = " + getAmount() + "€, Loan type = " + getLoanType() + ", duration = " + getDuration()
-				+ " years, interest rate = " + getInterestRate() + "%, start date = " + getStartDate()
-				+ ", insurance rate = " + getInsuranceRate() + "%]";
+		// used to display amount with thousands separator
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.FRANCE);
+
+		return "[Amount = " + numberFormat.format(getAmount()) + "€, Loan type = " + getLoanType() + ", duration = "
+				+ getDuration() + " years, interest rate = " + getInterestRate() + "%, start date = "
+				+ getStartDate().format(dateTimeFormatter) + ", insurance rate = " + getInsuranceRate() + "%]";
 	}
 
 }
