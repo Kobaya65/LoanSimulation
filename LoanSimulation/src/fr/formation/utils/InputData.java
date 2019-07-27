@@ -8,7 +8,7 @@ class InputData {
 	 * 
 	 * @param sc     scanner object
 	 * @param invite the text describing type of data to enter
-	 * @return the text entered
+	 * @return the "text" entered, whatever it is, number, date or text
 	 */
 	static String input(Scanner sc, String invite) {
 		System.out.println("Enter " + invite + " : ");

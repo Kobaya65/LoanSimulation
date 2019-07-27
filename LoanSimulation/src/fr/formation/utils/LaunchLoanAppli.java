@@ -22,14 +22,16 @@ public class LaunchLoanAppli {
 
 		Boolean checkForLoopExit = false;
 
-		// in order to convert string to localdate...
+		// to convert date in string to localdate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		// temporary variable for reading the scanner
+
 		String tempString = "";
 		// initialize scanner
 		Scanner sc = new Scanner(System.in);
 
+		// scanning amount
 		while (amount < 100) {
 			try {
 				tempString = InputData.input(sc, "amount");
@@ -42,6 +44,7 @@ public class LaunchLoanAppli {
 			}
 		}
 
+		// scanning loan type
 		while (checkForLoopExit == false) {
 			try {
 				tempString = InputData.input(sc, "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')");
@@ -58,6 +61,7 @@ public class LaunchLoanAppli {
 			}
 		}
 
+		// scanning duration
 		checkForLoopExit = false;
 		while (checkForLoopExit == false) {
 			try {
@@ -78,6 +82,7 @@ public class LaunchLoanAppli {
 			}
 		}
 
+		// scanning interest rate
 		checkForLoopExit = false;
 		while (checkForLoopExit == false) {
 			try {
@@ -93,14 +98,15 @@ public class LaunchLoanAppli {
 			}
 		}
 
+		// scanning start date
 		byte countError = 0;
 		while (startDate.equals(LocalDate.parse("1970-01-01"))) {
 			try {
-				tempString = InputData.input(sc, "start date ()");
+				tempString = InputData.input(sc, "start date (dd/mm/yyyy)");
 				startDate = LocalDate.parse(tempString, formatter);
 			} catch (Exception e) {
 				countError++;
-				if (countError < 2) {
+				if (countError < 3) {
 					System.err.println("Wrong date format. Please retry !");
 				} else {
 					System.err.println(
@@ -109,6 +115,7 @@ public class LaunchLoanAppli {
 			}
 		}
 
+		// scanning insurance rate
 		checkForLoopExit = false;
 		while (checkForLoopExit == false) {
 			try {
@@ -129,6 +136,7 @@ public class LaunchLoanAppli {
 		// create the funding
 		Funding myLoan = new Funding(amount, loanType, duration, interestRate, startDate, insuranceRate);
 
+		// little summary
 		System.out.println(myLoan.toString());
 	}
 }
