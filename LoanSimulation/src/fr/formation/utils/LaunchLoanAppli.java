@@ -70,7 +70,11 @@ public class LaunchLoanAppli {
 				}
 
 			} catch (Exception e) {
-				System.err.println(e.getMessage());
+				if (e.getMessage().substring(0, 16).equals("For input string")) {
+					System.err.println("Please enter a number >0");
+				} else {
+					System.err.println(e.getMessage());
+				}
 			}
 		}
 
@@ -97,9 +101,9 @@ public class LaunchLoanAppli {
 			} catch (Exception e) {
 				countError++;
 				if (countError < 2) {
-					System.out.println("Wrong date format. Please retry !");
+					System.err.println("Wrong date format. Please retry !");
 				} else {
-					System.out.println(
+					System.err.println(
 							"\nYOU FUCKING BASTARD !\nENTER THE DATE WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?\n");
 				}
 			}
