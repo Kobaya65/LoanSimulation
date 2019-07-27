@@ -25,7 +25,7 @@ public class Funding {
 	// constructor with all fields, considering all as mandatory
 	/**
 	 * 
-	 * @param amount        amount of the loan
+	 * @param amount        amount of the loan (>0)
 	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
 	 *                      Works)
 	 * @param duration      term of the loan

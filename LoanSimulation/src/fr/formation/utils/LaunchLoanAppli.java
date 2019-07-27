@@ -5,10 +5,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import fr.formation.business.Funding;
+import fr.formation.exceptions.IllegalAmountException;
+import fr.formation.exceptions.IllegalDurationException;
+import fr.formation.exceptions.IllegalLoanTypeException;
+import fr.formation.exceptions.IllegalRateException;
 
 public class LaunchLoanAppli {
 
 	public static void main(String[] args) {
+		int amount = 0;
+		String loanType = "";
+		int duration = 0;
+		double interestRate = 0;
+		LocalDate startDate = LocalDate.parse("1970-01-01");
+		double insuranceRate = 0;
+
+		Boolean checkForLoopExit = false;
+
 		// in order to convert string to localdate...
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -17,20 +30,65 @@ public class LaunchLoanAppli {
 		// initialize scanner
 		Scanner sc = new Scanner(System.in);
 
-		tempString = InputData.input(sc, "amount");
-		int amount = Integer.parseInt(tempString);
+		while (amount < 100) {
+			try {
+				tempString = InputData.input(sc, "amount");
+				amount = Integer.parseInt(tempString);
+				if (amount < 100) {
+					throw new IllegalAmountException("Amount of the loan must be greater than or equal to 100");
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
 
-		tempString = InputData.input(sc, "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')");
-		String loanType = tempString.toUpperCase();
+		while (checkForLoopExit == false) {
+			try {
+				tempString = InputData.input(sc, "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')");
+				loanType = tempString.toUpperCase();
 
-		tempString = InputData.input(sc, "duration in year(s)");
-		int duration = Integer.parseInt(tempString);
+				if (loanType.toUpperCase().equals("RE") || loanType.toUpperCase().equals("AU")
+						|| loanType.toUpperCase().equals("WO")) {
+					checkForLoopExit = true;
+				} else {
+					throw new IllegalLoanTypeException("Loan type can only be RE, AU or WO");
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
 
-		tempString = InputData.input(sc, "interest rate with a dot as decimal separator (ex. 3.26 for 3.26%)");
-		double interestRate = Double.parseDouble(tempString);
+		checkForLoopExit = false;
+		while (checkForLoopExit == false) {
+			try {
+				tempString = InputData.input(sc, "duration in year(s)");
+				duration = Integer.parseInt(tempString);
+				if (duration < 1 || duration > 30) {
+					throw new IllegalDurationException("Duration must be between 1 and 30 years both included");
+				} else {
+					checkForLoopExit = true;
+				}
 
-		// startDate = sc.next(fourYearsDigitsDatePattern);
-		LocalDate startDate = LocalDate.parse("1970-01-01");
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
+
+		checkForLoopExit = false;
+		while (checkForLoopExit == false) {
+			try {
+				tempString = InputData.input(sc, "interest rate with a dot as decimal separator (ex. 3.26 for 3.26%)");
+				interestRate = Double.parseDouble(tempString);
+				if (interestRate <= 0) {
+					throw new IllegalRateException("Rate must be greater than 0");
+				} else {
+					checkForLoopExit = true;
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
+
 		byte countError = 0;
 		while (startDate.equals(LocalDate.parse("1970-01-01"))) {
 			try {
@@ -42,18 +100,29 @@ public class LaunchLoanAppli {
 					System.out.println("Wrong date format. Please retry !");
 				} else {
 					System.out.println(
-							"YOU FUCKING BASTARD !\nENTER THE DATE WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?");
+							"\nYOU FUCKING BASTARD !\nENTER THE DATE WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?\n");
 				}
 			}
 		}
 
-		tempString = InputData.input(sc, "insurance rate with a dot as decimal separator (ex. 1.98 for 1.98%)");
-		Double insuranceRate = Double.parseDouble(tempString);
+		checkForLoopExit = false;
+		while (checkForLoopExit == false) {
+			try {
+				tempString = InputData.input(sc, "insurance rate with a dot as decimal separator (ex. 1.98 for 1.98%)");
+				insuranceRate = Double.parseDouble(tempString);
+				if (insuranceRate <= 0) {
+					throw new IllegalRateException("Rate must be greater than 0");
+				} else {
+					checkForLoopExit = true;
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
 
-		// close scanner
-		sc.close();
+		sc.close(); // close scanner
 
-		// create a funding
+		// create the funding
 		Funding myLoan = new Funding(amount, loanType, duration, interestRate, startDate, insuranceRate);
 
 		System.out.println(myLoan.toString());
