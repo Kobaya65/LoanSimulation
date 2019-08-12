@@ -1,5 +1,6 @@
 package fr.formation.business;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
@@ -8,24 +9,29 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
+ * This class represents a loan.
  * 
  * @author Philippe AMICE
  * 
- *         This class represents a loan.
- * 
  */
 public class Funding {
-	private int amount;
+	private BigDecimal amount;
 	private String loanType;
-	private int duration;
-	private Double interestRate;
+	private long duration;
+	private BigDecimal interestRate;
 	private LocalDate startDate;
-	private Double insuranceRate;
+	private BigDecimal insuranceRate;
 
-	// constructor with all fields, considering all as mandatory
+	// DateTimeFormatter used to display the date the right way
+	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+
+	public Funding() {
+	}
+
 	/**
+	 * constructor with all fields as mandatory
 	 * 
-	 * @param amount        amount of the loan (>0)
+	 * @param amount        amount of the loan (>1000)
 	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
 	 *                      Works)
 	 * @param duration      term of the loan
@@ -33,8 +39,8 @@ public class Funding {
 	 * @param startDate     date of the first monthly payment
 	 * @param insuranceRate insurance rate
 	 */
-	public Funding(int amount, String loanType, int duration, Double interestRate, LocalDate startDate,
-			Double insuranceRate) {
+	public Funding(BigDecimal amount, String loanType, long duration, BigDecimal interestRate, LocalDate startDate,
+			BigDecimal insuranceRate) {
 
 		// using setters where controls are centralized
 		setAmount(amount);
@@ -45,14 +51,14 @@ public class Funding {
 		setInsuranceRate(insuranceRate);
 	}
 
-	public int getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	private void setAmount(int amount) {
+	private void setAmount(BigDecimal amount) {
 		// a loan should not be less than 100 !
-		if (amount < 100) {
-			throw new IllegalArgumentException("Amount must be greater than 100.");
+		if (amount.compareTo(BigDecimal.valueOf(1000.0)) == -1) {
+			throw new IllegalArgumentException("Amount must be greater than 1000.");
 		} else {
 			this.amount = amount;
 		}
@@ -67,11 +73,11 @@ public class Funding {
 		this.loanType = loanType;
 	}
 
-	public int getDuration() {
+	public long getDuration() {
 		return duration;
 	}
 
-	private void setDuration(int duration) {
+	private void setDuration(long duration) {
 		if (duration < 1 || duration > 30) {
 			throw new IllegalArgumentException("Duration must be between 1 and 30 (years).");
 		} else {
@@ -79,14 +85,14 @@ public class Funding {
 		}
 	}
 
-	public Double getInterestRate() {
+	public BigDecimal getInterestRate() {
 		return interestRate;
 	}
 
-	private void setInterestRate(Double interestRate) {
+	private void setInterestRate(BigDecimal interestRate) {
 		Objects.requireNonNull(interestRate);
 
-		if (interestRate == 0) {
+		if (interestRate.compareTo(BigDecimal.valueOf(0.0)) == -1) {
 			throw new IllegalArgumentException("Interest rate must be greater than 0.");
 		} else {
 			this.interestRate = interestRate;
@@ -100,7 +106,6 @@ public class Funding {
 	private void setStartDate(LocalDate startDate) {
 		Objects.requireNonNull(startDate);
 
-		// System.out.println("Date du jour = " + LocalDate.now().toString());
 		if (startDate.isBefore((ChronoLocalDate) LocalDate.now())) {
 			throw new IllegalArgumentException("Start date must be after today.");
 		} else {
@@ -108,29 +113,30 @@ public class Funding {
 		}
 	}
 
-	public Double getInsuranceRate() {
+	public BigDecimal getInsuranceRate() {
 		return insuranceRate;
 	}
 
-	private void setInsuranceRate(Double insuranceRate) {
-		if (insuranceRate == 0) {
+	private void setInsuranceRate(BigDecimal insuranceRate) {
+		if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) == -1) {
 			throw new IllegalArgumentException("Insurance rate must be greater than 0.");
 		} else {
 			this.insuranceRate = insuranceRate;
 		}
 	}
 
-	// DateTimeFormatter in order to display the date the way I want !
-	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-
 	@Override
 	public String toString() {
-		// used to display amount with thousands separator
+		// used to display amount with space as thousands separator
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.FRANCE);
+		// used to display percentage
+		NumberFormat decimalFormat = NumberFormat.getPercentInstance(Locale.FRANCE);
+		decimalFormat.setMinimumFractionDigits(3);
 
 		return "[Amount = " + numberFormat.format(getAmount()) + "€, Loan type = " + getLoanType() + ", duration = "
-				+ getDuration() + " years, interest rate = " + getInterestRate() + "%, start date = "
-				+ getStartDate().format(dateTimeFormatter) + ", insurance rate = " + getInsuranceRate() + "%]";
+				+ getDuration() + " years, interest rate = " + decimalFormat.format(getInterestRate())
+				+ ", start date = " + getStartDate().format(dateTimeFormatter) + ", insurance rate = "
+				+ decimalFormat.format(getInsuranceRate()) + "]";
 	}
 
 }
