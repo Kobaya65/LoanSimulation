@@ -83,8 +83,8 @@ class InputData {
 				tempString = scanKeyboard(sc, LOANTYPE);
 				loanType = tempString.toUpperCase();
 
-				if (loanType.toUpperCase().equals(EQRE) || loanType.toUpperCase().equals(EQAU)
-						|| loanType.toUpperCase().equals(EQWO)) {
+				if (loanType.equalsIgnoreCase(EQRE) || loanType.equalsIgnoreCase(EQAU)
+						|| loanType.equalsIgnoreCase(EQWO)) {
 					loopExit = true;
 				} else {
 					throw new IllegalLoanTypeException(ONLYREAUWO);
@@ -195,8 +195,8 @@ class InputData {
 				try {
 					tempString = scanKeyboard(sc, ANNUALMONTHLYEEXIT);
 
-					if (tempString.toUpperCase().equals(EQA) || tempString.toUpperCase().equals(EQM)
-							|| tempString.toUpperCase().equals(EQE)) {
+					if (tempString.equalsIgnoreCase(EQA) || tempString.equalsIgnoreCase(EQM)
+							|| tempString.equalsIgnoreCase(EQE)) {
 						whileExit = true;
 					} else {
 						throw new IllegalLoanTypeException(CHOOSEAME);

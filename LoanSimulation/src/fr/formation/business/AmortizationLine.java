@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * This abstract class represents a "line" of an amortization table to be
- * "printed" in the console
+ * displayed in the console
  * 
  * @author Philippe AMICE
  *

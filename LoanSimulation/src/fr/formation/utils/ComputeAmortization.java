@@ -37,7 +37,7 @@ class ComputeAmortization {
 		powMinusOne = onePlusRatePowDuration.subtract(new BigDecimal(1));
 		// compute 1 * 2
 		finalComputation1 = kMultipliedByPeriodRate.multiply(onePlusRatePowDuration);
-		finalComputation2 = finalComputation1.divide(powMinusOne, RoundingMode.HALF_DOWN);
+		finalComputation2 = finaHComputation1.divide(powMinusOne, RoundingMode.HALF_DOWN);
 
 		return finalComputation2;
 	}
@@ -60,7 +60,7 @@ class ComputeAmortization {
 	// compute insurance
 	static BigDecimal insurance(BigDecimal capital, BigDecimal rate, long duration) {
 		BigDecimal insu = capital.multiply(rate);
-		insu = insu.divide(BigDecimal.valueOf(duration, 0));
+		insu = insu.divide(BigDecimal.valueOf(duration));
 
 		return insu;
 	}
