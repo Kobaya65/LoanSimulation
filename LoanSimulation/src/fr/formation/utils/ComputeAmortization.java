@@ -37,7 +37,7 @@ class ComputeAmortization {
 		powMinusOne = onePlusRatePowDuration.subtract(new BigDecimal(1));
 		// compute 1 * 2
 		finalComputation1 = kMultipliedByPeriodRate.multiply(onePlusRatePowDuration);
-		finalComputation2 = finaHComputation1.divide(powMinusOne, RoundingMode.HALF_DOWN);
+		finalComputation2 = finalComputation1.divide(powMinusOne, RoundingMode.HALF_DOWN);
 
 		return finalComputation2;
 	}
