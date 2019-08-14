@@ -12,7 +12,7 @@ import java.math.RoundingMode;
  *
  */
 class ComputeAmortization {
-	static MathContext mc = new MathContext(6, RoundingMode.HALF_UP);
+	static MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
 
 	// compute periodRate
 	static BigDecimal periodRate(BigDecimal rate, long period) {

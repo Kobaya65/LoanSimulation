@@ -3,7 +3,6 @@ package fr.formation.business;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
@@ -29,7 +28,7 @@ public class Funding {
 	}
 
 	/**
-	 * constructor with all fields as mandatory
+	 * constructor with all fields mandatory
 	 * 
 	 * @param amount        amount of the loan (>1000)
 	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
@@ -57,10 +56,10 @@ public class Funding {
 
 	private void setAmount(BigDecimal amount) {
 		// a loan should not be less than 100 !
-		if (amount.compareTo(BigDecimal.valueOf(1000.0)) == -1) {
-			throw new IllegalArgumentException("Amount must be greater than 1000.");
-		} else {
+		if (amount.compareTo(BigDecimal.valueOf(1000.0)) != -1) {
 			this.amount = amount;
+		} else {
+			throw new IllegalArgumentException("Amount must be greater than 1000.");
 		}
 	}
 
@@ -78,10 +77,10 @@ public class Funding {
 	}
 
 	private void setDuration(long duration) {
-		if (duration < 1 || duration > 30) {
-			throw new IllegalArgumentException("Duration must be between 1 and 30 (years).");
-		} else {
+		if (duration >= 1 && duration <= 30) {
 			this.duration = duration;
+		} else {
+			throw new IllegalArgumentException("Duration must be between 1 and 30 (years).");
 		}
 	}
 
@@ -92,10 +91,10 @@ public class Funding {
 	private void setInterestRate(BigDecimal interestRate) {
 		Objects.requireNonNull(interestRate);
 
-		if (interestRate.compareTo(BigDecimal.valueOf(0.0)) == -1) {
-			throw new IllegalArgumentException("Interest rate must be greater than 0.");
-		} else {
+		if (interestRate.compareTo(BigDecimal.valueOf(0.0)) > 0) {
 			this.interestRate = interestRate;
+		} else {
+			throw new IllegalArgumentException("Interest rate must be greater than 0.");
 		}
 	}
 
@@ -106,10 +105,10 @@ public class Funding {
 	private void setStartDate(LocalDate startDate) {
 		Objects.requireNonNull(startDate);
 
-		if (startDate.isBefore((ChronoLocalDate) LocalDate.now())) {
-			throw new IllegalArgumentException("Start date must be after today.");
-		} else {
+		if (!startDate.isBefore(LocalDate.now())) {
 			this.startDate = startDate;
+		} else {
+			throw new IllegalArgumentException("Start date must be after today.");
 		}
 	}
 
@@ -118,10 +117,10 @@ public class Funding {
 	}
 
 	private void setInsuranceRate(BigDecimal insuranceRate) {
-		if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) == -1) {
-			throw new IllegalArgumentException("Insurance rate must be greater than 0.");
-		} else {
+		if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) > 0) {
 			this.insuranceRate = insuranceRate;
+		} else {
+			throw new IllegalArgumentException("Insurance rate must be greater than 0.");
 		}
 	}
 

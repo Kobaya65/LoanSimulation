@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import fr.formation.business.AmortizationLine;
 import fr.formation.business.Funding;
+import fr.formation.enums.Choose;
+import fr.formation.enums.LoanType;
 import fr.formation.exceptions.IllegalAmountException;
 import fr.formation.exceptions.IllegalDurationException;
 import fr.formation.exceptions.IllegalLoanTypeException;
@@ -38,9 +40,6 @@ class InputData {
 		String tempString = "";
 		int duration = 0;
 
-		final String EQRE = "RE";
-		final String EQAU = "AU";
-		final String EQWO = "WO";
 		final String AMOUNT = "amount";
 		final String AMNTGTE100 = "Amount of the loan must be greater than or equal to 100";
 		final String LOANTYPE = "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')";
@@ -64,6 +63,24 @@ class InputData {
 		// to convert date in string to localdate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATEFORMAT10);
 
+		// scanning loan type
+		while (loopExit == false) {
+			try {
+				tempString = scanKeyboard(sc, LOANTYPE);
+				loanType = tempString.toUpperCase();
+
+				if (loanType.equalsIgnoreCase(LoanType.AU.toString())
+						|| loanType.equalsIgnoreCase(LoanType.RE.toString())
+						|| loanType.equalsIgnoreCase(LoanType.WO.toString())) {
+					loopExit = true;
+				} else {
+					throw new IllegalLoanTypeException(ONLYREAUWO);
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
+		}
+
 		// scanning loan amount
 		while (amount.compareTo(BigDecimal.valueOf(100.0)) == -1) {
 			try {
@@ -77,33 +94,16 @@ class InputData {
 			}
 		}
 
-		// scanning loan type
-		while (loopExit == false) {
-			try {
-				tempString = scanKeyboard(sc, LOANTYPE);
-				loanType = tempString.toUpperCase();
-
-				if (loanType.equalsIgnoreCase(EQRE) || loanType.equalsIgnoreCase(EQAU)
-						|| loanType.equalsIgnoreCase(EQWO)) {
-					loopExit = true;
-				} else {
-					throw new IllegalLoanTypeException(ONLYREAUWO);
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-			}
-		}
-
 		// scanning duration
 		loopExit = false;
 		while (loopExit == false) {
 			try {
 				tempString = scanKeyboard(sc, DURATIONYEARS);
 				duration = Integer.parseInt(tempString);
-				if (duration < 1 || duration > 30) {
-					throw new IllegalDurationException(DURATIONBTW1AND30);
-				} else {
+				if (duration >= 1 && duration <= 30) {
 					loopExit = true;
+				} else {
+					throw new IllegalDurationException(DURATIONBTW1AND30);
 				}
 
 			} catch (Exception e) {
@@ -122,10 +122,10 @@ class InputData {
 				tempString = scanKeyboard(sc, INTRATEDOTDECIMALSEPAR);
 				interestRate = BigDecimal.valueOf(Double.parseDouble(tempString));
 				interestRate = interestRate.divide(BigDecimal.valueOf(100L));
-				if (interestRate.compareTo(BigDecimal.valueOf(0.0)) == 0) {
-					throw new IllegalRateException(RATEGT0);
-				} else {
+				if (interestRate.compareTo(BigDecimal.valueOf(0.0)) != 0) {
 					loopExit = true;
+				} else {
+					throw new IllegalRateException(RATEGT0);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -155,10 +155,10 @@ class InputData {
 				tempString = scanKeyboard(sc, INSURATEDOTDECIMALSEPAR);
 				insuranceRate = BigDecimal.valueOf(Double.parseDouble(tempString));
 				insuranceRate = insuranceRate.divide(BigDecimal.valueOf(100L));
-				if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) == -1) {
-					throw new IllegalRateException(RATEGT0);
-				} else {
+				if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) != -1) {
 					loopExit = true;
+				} else {
+					throw new IllegalRateException(RATEGT0);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -177,9 +177,6 @@ class InputData {
 	 * @param Funding loan the loan
 	 */
 	static void tableChoiceOrExit(Scanner sc, Funding loan) {
-		final String EQA = "A";
-		final String EQE = "E";
-		final String EQM = "M";
 		final String ANNUALMONTHLYEEXIT = "A for [A]nnual or M for [M]onthly amortization table, or E to [E]xit";
 		final String CHOOSEAME = "Choose ".concat(ANNUALMONTHLYEEXIT);
 		String tempString = "";
@@ -195,8 +192,9 @@ class InputData {
 				try {
 					tempString = scanKeyboard(sc, ANNUALMONTHLYEEXIT);
 
-					if (tempString.equalsIgnoreCase(EQA) || tempString.equalsIgnoreCase(EQM)
-							|| tempString.equalsIgnoreCase(EQE)) {
+					if (tempString.equalsIgnoreCase(Choose.A.toString())
+							|| tempString.equalsIgnoreCase(Choose.M.toString())
+							|| tempString.equalsIgnoreCase(Choose.E.toString())) {
 						whileExit = true;
 					} else {
 						throw new IllegalLoanTypeException(CHOOSEAME);
@@ -206,13 +204,13 @@ class InputData {
 				}
 			}
 
-			if (tempString.equalsIgnoreCase(EQA)) {
+			if (tempString.equalsIgnoreCase(Choose.A.toString())) {
 				choice = 1;
-			} else if (tempString.equalsIgnoreCase(EQM)) {
+			} else if (tempString.equalsIgnoreCase(Choose.M.toString())) {
 				choice = 12;
 			}
 
-			if (!tempString.equalsIgnoreCase(EQE)) {
+			if (!tempString.equalsIgnoreCase(Choose.E.toString())) {
 				// call prepareCalculation only if input != "E"
 				ArrayList<AmortizationLine> table = PrepareCalculation.prepareCalculation(loan, choice);
 				// now, display table
@@ -222,9 +220,9 @@ class InputData {
 			}
 
 			// exit the loop if input is "E"
-		} while (!tempString.equalsIgnoreCase(EQE));
+		} while (!tempString.equalsIgnoreCase(Choose.E.toString()));
 
-		if (tempString.equalsIgnoreCase(EQE))
+		if (tempString.equalsIgnoreCase(Choose.E.toString()))
 			System.out.println("This is the end !");
 		else
 			System.out.println("! Abnormal end of program !");
