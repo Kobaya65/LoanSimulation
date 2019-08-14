@@ -30,19 +30,20 @@ abstract class PrepareCalculation {
 		BigDecimal remainingK = loan.getAmount();
 
 		// number of lines in the amortization table
-		long duration = loan.getDuration() * coeff;
+		long duration = loan.getDuration();
 		BigDecimal principal;
 		BigDecimal interestAmount;
 		BigDecimal maturityRate = ComputeAmortization.periodRate(loan.getInterestRate(), coeff);
 		// date of first payoff
 		LocalDate date = loan.getStartDate();
 
-		BigDecimal insurance = ComputeAmortization.insurance(loan.getAmount(), loan.getInsuranceRate(), duration);
+		BigDecimal insurance = ComputeAmortization.insurance(loan.getAmount(), loan.getInsuranceRate(),
+				duration * coeff);
 
 		// compute payoff
-		BigDecimal payoff = ComputeAmortization.payoff(remainingK, maturityRate, duration);
+		BigDecimal payoff = ComputeAmortization.payoff(remainingK, loan.getInterestRate(), duration, coeff);
 
-		for (int i = 0; i < duration; i++) {
+		for (int i = 0; i < duration * coeff; i++) {
 			AmortizationLine amortizationLine = new AmortizationLine();
 
 			// year or date

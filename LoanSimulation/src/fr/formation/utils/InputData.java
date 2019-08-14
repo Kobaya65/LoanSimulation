@@ -216,6 +216,7 @@ class InputData {
 				// call prepareCalculation only if input != "E"
 				ArrayList<AmortizationLine> table = PrepareCalculation.prepareCalculation(loan, choice);
 				// now, display table
+				// tempString contains either "A" or "M"
 				DisplayAmortizationPeriod.displayTable(table, tempString.toString());
 				whileExit = false;
 			}
@@ -242,14 +243,12 @@ class InputData {
 		System.out.println("\nEnter ".concat(invite).concat(" : "));
 
 		// scan keyboard
-//		while (sc.hasNextLine()) {
 		try {
 			enteredValue = sc.nextLine();
 		} catch (Exception e) {
 			// System.out.println("Message " + e.getMessage() + "\n" + e.toString());
 			System.out.println("Message ".concat(e.getMessage()).concat("\n").concat(e.toString()));
 		}
-//		}
 
 		return enteredValue;
 	}
