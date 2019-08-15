@@ -1,5 +1,11 @@
 package fr.formation.utils;
 
+/**
+ * All constants needed for this project are grouped here.
+ * 
+ * @author Philippe AMICE
+ *
+ */
 class Constants {
 	protected static final char space = ' ';
 
