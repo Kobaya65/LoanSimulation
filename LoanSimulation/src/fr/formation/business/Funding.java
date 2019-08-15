@@ -137,5 +137,4 @@ public class Funding {
 				+ ", start date = " + getStartDate().format(dateTimeFormatter) + ", insurance rate = "
 				+ decimalFormat.format(getInsuranceRate()) + "]";
 	}
-
 }

@@ -12,12 +12,12 @@ import java.math.RoundingMode;
  *
  */
 class ComputeAmortization {
-	static MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
+	// MathContext object used many times in hereunder calculations on BigDecimals
+	static MathContext mc = new MathContext(12, RoundingMode.HALF_UP);
 
 	// compute periodRate
 	static BigDecimal periodRate(BigDecimal rate, long period) {
-		BigDecimal pr = rate.divide(BigDecimal.valueOf(period), mc);
-		return pr;
+		return rate.divide(BigDecimal.valueOf(period), mc);
 	}
 
 	// compute payoff
@@ -27,22 +27,20 @@ class ComputeAmortization {
 	static BigDecimal payoff(BigDecimal loanAmount, BigDecimal rate, long duration, int coeff) {
 		final BigDecimal comp1;
 		final BigDecimal comp2;
-		final BigDecimal comp3;
+		final int comp3;
 		final BigDecimal comp4;
+		final BigDecimal one = new BigDecimal(1);
 
-		// compute 1 = 9000
-		comp1 = loanAmount.multiply(rate).divide(BigDecimal.valueOf(coeff), mc);
-		// compute 2 = 1.045
+		// compute 1
+		comp1 = loanAmount.multiply(rate, mc).divide(BigDecimal.valueOf(coeff), mc);
+		// compute 2
 		comp2 = rate.divide(BigDecimal.valueOf(coeff), mc).add(new BigDecimal(1));
+		// compute 3
+		comp3 = -1 * (int) duration * coeff;
+		// compute 4
+		comp4 = one.subtract(comp2.pow(comp3, mc));
 
-		// compute 3 = -20
-		comp3 = new BigDecimal(-1 * duration * coeff);
-		// compute 4 =
-		comp4 = new BigDecimal(1).subtract(comp2.pow((int) comp3.longValueExact(), mc));
-
-		BigDecimal r = comp1.divide(comp4, 6);
-
-		return r;
+		return comp1.divide(comp4, 6);
 	}
 
 	// compute amount of interest

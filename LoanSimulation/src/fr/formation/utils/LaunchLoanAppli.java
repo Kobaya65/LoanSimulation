@@ -13,9 +13,8 @@ import fr.formation.business.Funding;
 class LaunchLoanAppli {
 
 	public static void main(String[] args) {
-//		Funding myLoan = new Funding(BigDecimal.valueOf(250000L), "RE", 25, BigDecimal.valueOf(0.0325),
-//				LocalDate.of(2020, Month.JANUARY, 1), BigDecimal.valueOf(.0078));
 		Funding myLoan = new Funding();
+		// opening scanner
 		Scanner sc = new Scanner(System.in);
 
 		final String line = ">>-----------------------<<";

@@ -11,6 +11,7 @@ import fr.formation.business.Funding;
 import fr.formation.enums.Choose;
 import fr.formation.enums.LoanType;
 import fr.formation.exceptions.IllegalAmountException;
+import fr.formation.exceptions.IllegalDateException;
 import fr.formation.exceptions.IllegalDurationException;
 import fr.formation.exceptions.IllegalLoanTypeException;
 import fr.formation.exceptions.IllegalRateException;
@@ -35,38 +36,21 @@ class InputData {
 		BigDecimal interestRate = new BigDecimal(0);
 		BigDecimal insuranceRate = new BigDecimal(0);
 
-		LocalDate startDate = LocalDate.parse("1970-01-01");
+		LocalDate startDate = LocalDate.now();
 		String loanType = "";
 		String tempString = "";
 		int duration = 0;
-
-		final String AMOUNT = "amount";
-		final String AMNTGTE100 = "Amount of the loan must be greater than or equal to 100";
-		final String LOANTYPE = "loan type ('RE = Real Estate', 'AU = Auto' or 'WO = Works')";
-		final String ONLYREAUWO = "Loan type can only be RE, AU or WO";
-		final String DURATIONYEARS = "duration in year(s)";
-		final String DURATIONBTW1AND30 = "Duration must be between 1 and 30 years both included";
-		final String FORINPUTSTRING = "For input string";
-		final String INTRATEDOTDECIMALSEPAR = "interest rate with a dot as decimal separator (ex. 3.26 for 3.26%)";
-		final String ENTERNUMBERGT0 = "Please enter a number >0";
-		final String RATEGT0 = "Rate must be greater than 0";
-		final String DATEFORMAT10 = "dd/MM/yyyy";
-		final String STARTDATEDDMMYYYY = "start date (".concat(DATEFORMAT10).concat(")");
-		final String WRONGDATEFORMAT = "Wrong date format. Expected format is '".concat(DATEFORMAT10).concat("'");
-		final String DATE19700101 = "1970-01-01";
-		final String FUCKINGBASTARD = "\nYOU FUCKING BASTARD !\nENTER THE DATE WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?\n";
-		final String INSURATEDOTDECIMALSEPAR = "insurance rate with a dot as decimal separator (ex. 1.98 for 1.98%)";
 
 		// flag used to exit control loops
 		Boolean loopExit = false;
 
 		// to convert date in string to localdate
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATEFORMAT10);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATEFORMAT10);
 
 		// scanning loan type
 		while (loopExit == false) {
 			try {
-				tempString = scanKeyboard(sc, LOANTYPE);
+				tempString = scanKeyboard(sc, Constants.LOANTYPE);
 				loanType = tempString.toUpperCase();
 
 				if (loanType.equalsIgnoreCase(LoanType.AU.toString())
@@ -74,7 +58,7 @@ class InputData {
 						|| loanType.equalsIgnoreCase(LoanType.WO.toString())) {
 					loopExit = true;
 				} else {
-					throw new IllegalLoanTypeException(ONLYREAUWO);
+					throw new IllegalLoanTypeException(Constants.ONLYREAUWO);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -84,10 +68,10 @@ class InputData {
 		// scanning loan amount
 		while (amount.compareTo(BigDecimal.valueOf(100.0)) == -1) {
 			try {
-				tempString = scanKeyboard(sc, AMOUNT);
+				tempString = scanKeyboard(sc, Constants.AMOUNT);
 				amount = BigDecimal.valueOf(Double.parseDouble(tempString));
 				if (amount.compareTo(BigDecimal.valueOf(100.0)) == -1) {
-					throw new IllegalAmountException(AMNTGTE100);
+					throw new IllegalAmountException(Constants.AMNTGTE100);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -98,17 +82,17 @@ class InputData {
 		loopExit = false;
 		while (loopExit == false) {
 			try {
-				tempString = scanKeyboard(sc, DURATIONYEARS);
+				tempString = scanKeyboard(sc, Constants.DURATIONYEARS);
 				duration = Integer.parseInt(tempString);
 				if (duration >= 1 && duration <= 30) {
 					loopExit = true;
 				} else {
-					throw new IllegalDurationException(DURATIONBTW1AND30);
+					throw new IllegalDurationException(Constants.DURATIONBTW1AND30);
 				}
 
 			} catch (Exception e) {
-				if (e.getMessage().substring(0, 16).equals(FORINPUTSTRING)) {
-					System.err.println(ENTERNUMBERGT0);
+				if (e.getMessage().substring(0, 16).equals(Constants.FORINPUTSTRING)) {
+					System.err.println(Constants.ENTERNUMBERGT0);
 				} else {
 					System.err.println(e.getMessage());
 				}
@@ -119,13 +103,13 @@ class InputData {
 		loopExit = false;
 		while (loopExit == false) {
 			try {
-				tempString = scanKeyboard(sc, INTRATEDOTDECIMALSEPAR);
+				tempString = scanKeyboard(sc, Constants.INTRATEDOTDECIMALSEPAR);
 				interestRate = BigDecimal.valueOf(Double.parseDouble(tempString));
 				interestRate = interestRate.divide(BigDecimal.valueOf(100L));
 				if (interestRate.compareTo(BigDecimal.valueOf(0.0)) != 0) {
 					loopExit = true;
 				} else {
-					throw new IllegalRateException(RATEGT0);
+					throw new IllegalRateException(Constants.RATEGT0);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -134,16 +118,28 @@ class InputData {
 
 		// scanning start date
 		byte countError = 0;
-		while (startDate.equals(LocalDate.parse(DATE19700101))) {
+		loopExit = false;
+		// while startDate <= today
+		while (loopExit == false) {
 			try {
-				tempString = scanKeyboard(sc, STARTDATEDDMMYYYY);
+				tempString = scanKeyboard(sc, Constants.STARTDATEDDMMYYYY);
 				startDate = LocalDate.parse(tempString, formatter);
+				if (startDate.compareTo(LocalDate.now()) > 0) {
+					loopExit = true;
+				} else {
+					throw new IllegalDateException(Constants.ILLEGALDATE);
+				}
+
 			} catch (Exception e) {
 				countError++;
 				if (countError < 3) {
-					System.err.println(WRONGDATEFORMAT);
+					if (e instanceof IllegalDateException) {
+						System.err.println(e.getMessage());
+					} else {
+						System.err.println(Constants.WRONGDATEFORMAT);
+					}
 				} else {
-					System.err.println(FUCKINGBASTARD);
+					System.err.println(Constants.FUCKINGBASTARD);
 				}
 			}
 		}
@@ -152,13 +148,13 @@ class InputData {
 		loopExit = false;
 		while (loopExit == false) {
 			try {
-				tempString = scanKeyboard(sc, INSURATEDOTDECIMALSEPAR);
+				tempString = scanKeyboard(sc, Constants.INSURATEDOTDECIMALSEPAR);
 				insuranceRate = BigDecimal.valueOf(Double.parseDouble(tempString));
 				insuranceRate = insuranceRate.divide(BigDecimal.valueOf(100L));
 				if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) != -1) {
 					loopExit = true;
 				} else {
-					throw new IllegalRateException(RATEGT0);
+					throw new IllegalRateException(Constants.RATEGT0);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());

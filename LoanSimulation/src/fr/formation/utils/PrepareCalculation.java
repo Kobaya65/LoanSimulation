@@ -20,7 +20,6 @@ abstract class PrepareCalculation {
 	 */
 	public static ArrayList<AmortizationLine> prepareCalculation(Funding loan, int coeff) {
 		ArrayList<AmortizationLine> table = new ArrayList<AmortizationLine>();
-		char space = ' ';
 		StringBuilder dateAsString = new StringBuilder();
 
 		// formatter to convert date in string to localdate
@@ -53,9 +52,9 @@ abstract class PrepareCalculation {
 				dateAsString.append(Integer.toString(date.getYear() + i));
 			} else {
 				// monthly computation
-				dateAsString.append(space);
+				dateAsString.append(Constants.space);
 				dateAsString.append(date.plusMonths(i).format(formatter));
-				dateAsString.append(space);
+				dateAsString.append(Constants.space);
 			}
 			amortizationLine.setPeriod(dateAsString.toString());
 
