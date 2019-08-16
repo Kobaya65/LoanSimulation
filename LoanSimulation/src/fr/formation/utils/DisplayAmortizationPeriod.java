@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import fr.formation.business.AmortizationLine;
 
 /**
- * 
+ * Aims at displaying an amortization table.
  * 
  * @author Philippe AMICE
  *
