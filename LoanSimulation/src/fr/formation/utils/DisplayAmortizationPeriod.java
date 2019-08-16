@@ -25,6 +25,8 @@ public class DisplayAmortizationPeriod {
 		final char STRIP = '|';
 
 		// build separation line for the table
+		// if typeOfTable = 'A', then it's a annually report, so table has 7 columns,
+		// if typeOfTable = 'M', then it's a monthly report, so table has only 6 columns
 		byte nbColumns = (byte) (typeOfTable.equalsIgnoreCase(EQA) ? 7 : 6);
 		for (byte i = 0; i < nbColumns; i++) {
 			frameLine.append(PLUS);
