@@ -1,5 +1,10 @@
 package fr.formation.enums;
 
+/**
+ * 
+ * @author Philippe AMICE
+ * 
+ */
 public enum LoanType {
 	RE("RE"), AU("AU"), WO("WO");
 
