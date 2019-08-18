@@ -73,30 +73,24 @@ public class DisplayAmortizationPeriod {
 			}
 
 			dataLine.append(Constants.STRIP);
-			// dataLine.append(String.format(Constants.FMT142F, line.getAmortizedK()));
 			dataLine.append(StringUtils.formattedValue(14, line.getAmortizedK()));
 
 			dataLine.append(Constants.STRIP);
-			// dataLine.append(String.format(Constants.FMT142F, line.getInterests()));
 			dataLine.append(StringUtils.formattedValue(14, line.getInterests()));
 
 			dataLine.append(Constants.STRIP);
-			// dataLine.append(String.format(Constants.FMT142F, line.getRemainingK()));
 			dataLine.append(StringUtils.formattedValue(14, line.getRemainingK()));
 
 			// this column only for annual amortization
 			if (typeOfTable.equalsIgnoreCase(Constants.EQA)) {
 				dataLine.append(Constants.STRIP);
-				// dataLine.append(String.format(Constants.FMT142F, line.getPayoff()));
 				dataLine.append(StringUtils.formattedValue(14, line.getPayoff()));
 			}
 
 			dataLine.append(Constants.STRIP);
-			// dataLine.append(String.format(Constants.FMT142F, line.getInsurance()));
 			dataLine.append(StringUtils.formattedValue(14, line.getInsurance()));
 
 			dataLine.append(Constants.STRIP);
-			// dataLine.append(String.format(Constants.FMT142F, line.getTotalCost()));
 			dataLine.append(StringUtils.formattedValue(14, line.getTotalCost()));
 			dataLine.append(Constants.STRIP);
 

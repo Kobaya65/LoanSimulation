@@ -96,10 +96,6 @@ public class Constants {
 	 */
 	public static final String LINE14 = "--------------";
 	/**
-	 * format of number with two decimals
-	 */
-	public static final String FMT142F = "%14.2f";
-	/**
 	 * for annual table, display the year's rank, then the year within a 14
 	 * character width column
 	 */
