@@ -29,9 +29,15 @@ class InputData {
 	 * This function aims at getting all information needed to create Funding
 	 * object. It uses the class Scanner to prompt information.
 	 * 
+	 * @param sc the scanner used to get info
 	 * @return Funding object
+	 * @throws IllegalRateException     non valid rate
+	 * @throws IllegalDurationException non valid duration
+	 * @throws IllegalDateException     non valid date
+	 * @throws IllegalAmountException   non valid amount
 	 */
-	static Funding loanInputs(Scanner sc) {
+	static Funding loanInputs(Scanner sc)
+			throws IllegalAmountException, IllegalDateException, IllegalDurationException, IllegalRateException {
 		BigDecimal amount = new BigDecimal(0);
 		BigDecimal interestRate = new BigDecimal(0);
 		BigDecimal insuranceRate = new BigDecimal(0);
@@ -66,12 +72,12 @@ class InputData {
 		}
 
 		// scanning loan amount
-		while (amount.compareTo(BigDecimal.valueOf(100.0)) == -1) {
+		while (amount.compareTo(BigDecimal.valueOf(1000.0)) == -1) {
 			try {
 				tempString = scanKeyboard(sc, Constants.AMOUNT);
 				amount = BigDecimal.valueOf(Double.parseDouble(tempString));
-				if (amount.compareTo(BigDecimal.valueOf(100.0)) == -1) {
-					throw new IllegalAmountException(Constants.AMNTGTE100);
+				if (amount.compareTo(BigDecimal.valueOf(1000.0)) == -1) {
+					throw new IllegalAmountException(Constants.AMNTGTETHOUSAND);
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -129,7 +135,6 @@ class InputData {
 				} else {
 					throw new IllegalDateException(Constants.ILLEGALDATE);
 				}
-
 			} catch (Exception e) {
 				countError++;
 				if (countError < 3) {
@@ -170,7 +175,8 @@ class InputData {
 	 * Scanning keyboard for the user to choose between annual or monthly
 	 * amortization table, or exit the program.
 	 * 
-	 * @param Funding loan the loan
+	 * @param sc   the scanner used to get info
+	 * @param loan the loan
 	 */
 	static void tableChoiceOrExit(Scanner sc, Funding loan) {
 		final String ANNUALMONTHLYEEXIT = "A for [A]nnual or M for [M]onthly amortization table, or E to [E]xit";

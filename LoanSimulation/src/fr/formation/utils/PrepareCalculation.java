@@ -15,8 +15,9 @@ abstract class PrepareCalculation {
 	 * printed in the console.
 	 * 
 	 * @param loan  the loan
-	 * @param coeff 1 for annual amortization table, 12 for monthly amortization
+	 * @param coeff 1 for annual amortization table, 12 for monthly amortizatin
 	 *              table
+	 * @return an arraylist of amortization lines
 	 */
 	public static ArrayList<AmortizationLine> prepareCalculation(Funding loan, int coeff) {
 		ArrayList<AmortizationLine> table = new ArrayList<AmortizationLine>();
@@ -52,9 +53,9 @@ abstract class PrepareCalculation {
 				dateAsString.append(Integer.toString(date.getYear() + i));
 			} else {
 				// monthly computation
-				dateAsString.append(Constants.space);
+				dateAsString.append(Constants.SPACE);
 				dateAsString.append(date.plusMonths(i).format(formatter));
-				dateAsString.append(Constants.space);
+				dateAsString.append(Constants.SPACE);
 			}
 			amortizationLine.setPeriod(dateAsString.toString());
 

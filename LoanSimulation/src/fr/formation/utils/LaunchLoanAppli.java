@@ -3,6 +3,10 @@ package fr.formation.utils;
 import java.util.Scanner;
 
 import fr.formation.business.Funding;
+import fr.formation.exceptions.IllegalAmountException;
+import fr.formation.exceptions.IllegalDateException;
+import fr.formation.exceptions.IllegalDurationException;
+import fr.formation.exceptions.IllegalRateException;
 
 /**
  * Launching simulation
@@ -12,7 +16,8 @@ import fr.formation.business.Funding;
  */
 class LaunchLoanAppli {
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+			throws IllegalAmountException, IllegalDateException, IllegalDurationException, IllegalRateException {
 		Funding myLoan = new Funding();
 		// opening scanner
 		Scanner sc = new Scanner(System.in);

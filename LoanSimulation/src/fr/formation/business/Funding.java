@@ -7,6 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
 
+import fr.formation.exceptions.IllegalAmountException;
+import fr.formation.exceptions.IllegalDateException;
+import fr.formation.exceptions.IllegalDurationException;
+import fr.formation.exceptions.IllegalRateException;
+import fr.formation.utils.Constants;
+
 /**
  * This class represents a loan.
  * 
@@ -24,22 +30,28 @@ public class Funding {
 	// DateTimeFormatter used to display the date the right way
 	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 
+	// empty constructor
 	public Funding() {
 	}
 
 	/**
 	 * constructor with all fields mandatory
 	 * 
-	 * @param amount        amount of the loan (>1000)
+	 * @param amount        amount of the loan must be greater than or equal to 1000
 	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
 	 *                      Works)
 	 * @param duration      term of the loan
 	 * @param interestRate  interest rate
 	 * @param startDate     date of the first monthly payment
 	 * @param insuranceRate insurance rate
+	 * @throws IllegalAmountException   non valid amount
+	 * @throws IllegalDateException     non valid date
+	 * @throws IllegalDurationException non valid duration
+	 * @throws IllegalRateException     non valid rate
 	 */
 	public Funding(BigDecimal amount, String loanType, long duration, BigDecimal interestRate, LocalDate startDate,
-			BigDecimal insuranceRate) {
+			BigDecimal insuranceRate) throws IllegalAmountException, IllegalDateException, IllegalDurationException,
+			IllegalAmountException, IllegalRateException {
 
 		// using setters where controls are centralized
 		setAmount(amount);
@@ -54,12 +66,12 @@ public class Funding {
 		return amount;
 	}
 
-	private void setAmount(BigDecimal amount) {
-		// a loan should not be less than 100 !
+	private void setAmount(BigDecimal amount) throws IllegalAmountException {
+		// a loan must be greater than or equal to 1000
 		if (amount.compareTo(BigDecimal.valueOf(1000.0)) != -1) {
 			this.amount = amount;
 		} else {
-			throw new IllegalArgumentException("Amount must be greater than 1000.");
+			throw new IllegalAmountException(Constants.AMNTGTETHOUSAND);
 		}
 	}
 
@@ -76,11 +88,11 @@ public class Funding {
 		return duration;
 	}
 
-	private void setDuration(long duration) {
+	private void setDuration(long duration) throws IllegalDurationException {
 		if (duration >= 1 && duration <= 30) {
 			this.duration = duration;
 		} else {
-			throw new IllegalArgumentException("Duration must be between 1 and 30 (years).");
+			throw new IllegalDurationException(Constants.DURATIONBTW1AND30);
 		}
 	}
 
@@ -88,13 +100,13 @@ public class Funding {
 		return interestRate;
 	}
 
-	private void setInterestRate(BigDecimal interestRate) {
+	private void setInterestRate(BigDecimal interestRate) throws IllegalRateException {
 		Objects.requireNonNull(interestRate);
 
 		if (interestRate.compareTo(BigDecimal.valueOf(0.0)) > 0) {
 			this.interestRate = interestRate;
 		} else {
-			throw new IllegalArgumentException("Interest rate must be greater than 0.");
+			throw new IllegalRateException(Constants.RATEGT0);
 		}
 	}
 
@@ -102,13 +114,13 @@ public class Funding {
 		return startDate;
 	}
 
-	private void setStartDate(LocalDate startDate) {
+	private void setStartDate(LocalDate startDate) throws IllegalDateException {
 		Objects.requireNonNull(startDate);
 
 		if (!startDate.isBefore(LocalDate.now())) {
 			this.startDate = startDate;
 		} else {
-			throw new IllegalArgumentException("Start date must be after today.");
+			throw new IllegalDateException(Constants.ILLEGALDATE);
 		}
 	}
 
@@ -116,11 +128,11 @@ public class Funding {
 		return insuranceRate;
 	}
 
-	private void setInsuranceRate(BigDecimal insuranceRate) {
+	private void setInsuranceRate(BigDecimal insuranceRate) throws IllegalRateException {
 		if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) > 0) {
 			this.insuranceRate = insuranceRate;
 		} else {
-			throw new IllegalArgumentException("Insurance rate must be greater than 0.");
+			throw new IllegalRateException(Constants.RATEGT0);
 		}
 	}
 

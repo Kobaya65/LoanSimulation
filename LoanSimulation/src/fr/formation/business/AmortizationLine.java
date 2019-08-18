@@ -18,6 +18,7 @@ public class AmortizationLine {
 	private BigDecimal insurance;
 	private BigDecimal totalCost;
 
+	// empty constructor
 	public AmortizationLine() {
 	}
 
@@ -25,7 +26,7 @@ public class AmortizationLine {
 	 * This class represents a line in the final table, with figures provided by
 	 * methods of the class ComputeAmortization.
 	 * 
-	 * @param period       the date that determines the period (month or year, ie.
+	 * @param period       the date that determines the period (month or year, e.g.
 	 *                     01/01/2020 or 2020)
 	 * @param amortizedK   amortized capital
 	 * @param interestRate interest rate for the relevant period

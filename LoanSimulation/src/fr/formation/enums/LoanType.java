@@ -1,12 +1,25 @@
 package fr.formation.enums;
 
 /**
+ * Enum to restrain entry of loan type to RE (Real Estate), AU (AUtomotive) or
+ * WO (WOrks).
  * 
  * @author Philippe AMICE
  * 
  */
 public enum LoanType {
-	RE("RE"), AU("AU"), WO("WO");
+	/**
+	 * RE Real Estate
+	 */
+	RE("RE"),
+	/**
+	 * AU AUtomotive
+	 */
+	AU("AU"),
+	/**
+	 * WO WOrks
+	 */
+	WO("WO");
 
 	String loanType;
 

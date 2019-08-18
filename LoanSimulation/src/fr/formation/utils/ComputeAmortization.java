@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 
 /**
  * This abstract class aims at providing mathematical functions needed for
- * computations in an amortization table.
+ * computations of an amortization table.
  * 
  * @author Philippe AMICE
  *
