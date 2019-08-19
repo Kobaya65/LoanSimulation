@@ -15,9 +15,9 @@ public class StringUtils {
 	 * Returns a string containing <i>n</i> times a given string.
 	 * 
 	 * @param what    string to be repeated
-	 * @param howmany number of times to repeat <code>what<code>
+	 * @param howmany number of times to repeat <code>what</code>
 	 * 
-	 * @return the string with <code>what<code> repeated <code>howmany<code> times
+	 * @return the string with <code>what</code> repeated <code>howmany</code> times
 	 */
 	public static String repeatStr(String what, int howmany) {
 		char[] pattern = what.toCharArray();
