@@ -1,7 +1,8 @@
 package fr.formation.utils;
 
 /**
- * All constants needed for this project are grouped here.
+ * All constants needed for this project are grouped here. These are strings or
+ * char used repeatedly in the project.
  * 
  * @author Philippe AMICE
  *
@@ -92,7 +93,7 @@ public class Constants {
 	 */
 	public static final String FUCKINGBASTARD = "\nYOU FUCKING BASTARD !\nENTER A DATE > TODAY WITH THAT FORMAT 'dd/mm/yyyy'\nAND NOTHING ELSE. OK ?\n";
 	/**
-	 * line of 1 minus sign, the exact width of a column in the amortization table
+	 * line of 14 minus signs, the exact width of a column in the amortization table
 	 */
 	public static final String LINE14 = "--------------";
 	/**

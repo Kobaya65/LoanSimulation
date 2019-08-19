@@ -11,8 +11,8 @@ import fr.formation.business.Funding;
 abstract class PrepareCalculation {
 
 	/**
-	 * Computes needed figures and fills an arraylist of AmortizationLine to be
-	 * printed in the console.
+	 * Computes needed figures and fills an arraylist of
+	 * {@linkplain AmortizationLine} to be printed in the console.
 	 * 
 	 * @param loan  the loan
 	 * @param coeff 1 for annual amortization table, 12 for monthly amortizatin

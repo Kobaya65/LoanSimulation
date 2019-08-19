@@ -20,11 +20,29 @@ import fr.formation.utils.Constants;
  * 
  */
 public class Funding {
+	/**
+	 * amount of the loan must be greater than or equal to 1000
+	 */
 	private BigDecimal amount;
+	/**
+	 * type of loan (RE - Real Estate, AU - AUtomotive, WO - WOrks)
+	 */
 	private String loanType;
+	/**
+	 * term of the loan
+	 */
 	private long duration;
+	/**
+	 * fixed interest rate of the loan
+	 */
 	private BigDecimal interestRate;
+	/**
+	 * date of the first monthly payment
+	 */
 	private LocalDate startDate;
+	/**
+	 * insurance rate
+	 */
 	private BigDecimal insuranceRate;
 
 	// DateTimeFormatter used to display the date the right way
@@ -41,7 +59,7 @@ public class Funding {
 	 * @param loanType      type of loan (RE - Real Estate, AU - Automotive, WO -
 	 *                      Works)
 	 * @param duration      term of the loan
-	 * @param interestRate  interest rate
+	 * @param interestRate  fixed interest rate of the loan
 	 * @param startDate     date of the first monthly payment
 	 * @param insuranceRate insurance rate
 	 * @throws IllegalAmountException   non valid amount
@@ -62,10 +80,21 @@ public class Funding {
 		setInsuranceRate(insuranceRate);
 	}
 
+	/**
+	 * get amount of the loan.
+	 * 
+	 * @return amount of the loan
+	 */
 	public BigDecimal getAmount() {
 		return amount;
 	}
 
+	/**
+	 * set amount of the loan.
+	 * 
+	 * @param amount amount of the loan
+	 * @throws IllegalAmountException must be greater than or equal to 1000
+	 */
 	private void setAmount(BigDecimal amount) throws IllegalAmountException {
 		// a loan must be greater than or equal to 1000
 		if (amount.compareTo(BigDecimal.valueOf(1000.0)) != -1) {
@@ -75,19 +104,40 @@ public class Funding {
 		}
 	}
 
+	/**
+	 * get type of loan.
+	 * 
+	 * @return type of the loan
+	 */
 	public String getLoanType() {
 		return loanType;
 	}
 
+	/**
+	 * set type of loan.
+	 * 
+	 * @param loanType type of the loan
+	 */
 	private void setLoanType(String loanType) {
 		Objects.requireNonNull(loanType);
 		this.loanType = loanType;
 	}
 
+	/**
+	 * get duration of the loan.
+	 * 
+	 * @return duration of the loan
+	 */
 	public long getDuration() {
 		return duration;
 	}
 
+	/**
+	 * set duration of the loan.
+	 * 
+	 * @param duration duration of the loan
+	 * @throws IllegalDurationException must be between 1 and 30
+	 */
 	private void setDuration(long duration) throws IllegalDurationException {
 		if (duration >= 1 && duration <= 30) {
 			this.duration = duration;
@@ -96,10 +146,21 @@ public class Funding {
 		}
 	}
 
+	/**
+	 * get interest rate.
+	 * 
+	 * @return interest rate
+	 */
 	public BigDecimal getInterestRate() {
 		return interestRate;
 	}
 
+	/**
+	 * set interest rate.
+	 * 
+	 * @param interestRate interest rate
+	 * @throws IllegalRateException rate must be greater than 0
+	 */
 	private void setInterestRate(BigDecimal interestRate) throws IllegalRateException {
 		Objects.requireNonNull(interestRate);
 
@@ -110,10 +171,21 @@ public class Funding {
 		}
 	}
 
+	/**
+	 * get the date of the first payment.
+	 * 
+	 * @return date of the first payment
+	 */
 	public LocalDate getStartDate() {
 		return startDate;
 	}
 
+	/**
+	 * set the date of the first payment.
+	 * 
+	 * @param startDate date of the first payment
+	 * @throws IllegalDateException must be greater than today
+	 */
 	private void setStartDate(LocalDate startDate) throws IllegalDateException {
 		Objects.requireNonNull(startDate);
 
@@ -124,10 +196,21 @@ public class Funding {
 		}
 	}
 
+	/**
+	 * get insurance rate of the loan.
+	 * 
+	 * @return insurance rate of the loan
+	 */
 	public BigDecimal getInsuranceRate() {
 		return insuranceRate;
 	}
 
+	/**
+	 * set insurance rate of the loan.
+	 * 
+	 * @param insuranceRate insurance rate of the loan
+	 * @throws IllegalRateException rate must be greater than 0
+	 */
 	private void setInsuranceRate(BigDecimal insuranceRate) throws IllegalRateException {
 		if (insuranceRate.compareTo(BigDecimal.valueOf(0.0)) > 0) {
 			this.insuranceRate = insuranceRate;
@@ -136,6 +219,9 @@ public class Funding {
 		}
 	}
 
+	/**
+	 * shows fields of Funding object in a readable manner.
+	 */
 	@Override
 	public String toString() {
 		// used to display amount with space as thousands separator

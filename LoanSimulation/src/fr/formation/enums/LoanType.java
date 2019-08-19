@@ -9,15 +9,15 @@ package fr.formation.enums;
  */
 public enum LoanType {
 	/**
-	 * RE Real Estate
+	 * Real Estate
 	 */
 	RE("RE"),
 	/**
-	 * AU AUtomotive
+	 * AUtomotive
 	 */
 	AU("AU"),
 	/**
-	 * WO WOrks
+	 * WOrks
 	 */
 	WO("WO");
 
