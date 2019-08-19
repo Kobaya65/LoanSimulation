@@ -5,19 +5,19 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * A class containing some string utility functions.
+ * A class containing a few string utility functions.
  * 
  * @author Philippe AMICE
  *
  */
 public class StringUtils {
 	/**
-	 * Aims at creating a string containing <i>n</i> times a given string.
+	 * Returns a string containing <i>n</i> times a given string.
 	 * 
 	 * @param what    string to be repeated
-	 * @param howmany number of times to repeat {@code what}
+	 * @param howmany number of times to repeat <code>what<code>
 	 * 
-	 * @return the string with {@code what} repeated {@code howmany} times
+	 * @return the string with <code>what<code> repeated <code>howmany<code> times
 	 */
 	public static String repeatStr(String what, int howmany) {
 		char[] pattern = what.toCharArray();
