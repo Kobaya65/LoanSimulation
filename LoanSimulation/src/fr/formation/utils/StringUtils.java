@@ -35,16 +35,21 @@ public class StringUtils {
 	 * 
 	 * @param width width of the string to be filled
 	 * @param value value to be right padded
+	 * 
 	 * @return the right padded number
 	 */
 	public static String formattedValue(long width, BigDecimal value) {
+		// numberFormat defined with 9 integer digits, 2 decimal digits and thousand
+		// separator as defined in Locale
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.FRANCE);
 		numberFormat.setGroupingUsed(true);
 		numberFormat.setMaximumIntegerDigits(9);
 		numberFormat.setMinimumFractionDigits(2);
 		numberFormat.setMaximumFractionDigits(2);
 
+		// number of characters in the value
 		String n = numberFormat.format(value);
+		// precede the number with the number of spaces needed to fill the defined width
 		String m = repeatStr(String.valueOf(Constants.SPACE), (int) (width - n.length()));
 
 		return m.concat(n);
